@@ -1,17 +1,17 @@
-<!DOCTYPE html> 
-{% load static %} 
+<!DOCTYPE html>
+{% load static %}
 
 <html>
 
 
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/> 
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
 
 
     <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}"/> 
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
@@ -20,19 +20,24 @@
         background-image: url("/static/img/background.jpg");
         color: #EEE;
       }
-    </style>
-  </head>
-  <body>
-    <div class="container"> {% if submitted %} Your Ticket Has Been Submitted Successfully! {% else %} 
-      <h2>Ticket Raising Form</h2>
 
-      <form method="POST" id="create-ticket-form" data-handlers-url="{% url 'load_handlers' %}"> {% csrf_token %} {{ form.as_p }}
+    </style>
+</head>
+
+<body>
+<div class="container"> {% if submitted %} Your Ticket Has Been Submitted Successfully! {% else %}
+    <h2>Ticket Raising Form</h2>
+
+    <form method="POST" id="create-ticket-form" data-handlers-url="{% url 'load_handlers' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
 
         <input type="button" onclick="createTicket()" value="Create the Ticket" class="btn btn-primary">
-      </form> {% endif %} </div>
-  </div>
-  </body>
-  <script>
+    </form>
+    {% endif %}
+</div>
+</body>
+<script>
     let companyIdElement = $("#id_company")
     companyIdElement.change(function() {
       var url = $("#create-ticket-form").attr("data-handlers-url"); // get the url of the `load_handlers` view
@@ -47,5 +52,6 @@
         }
       });
     });
-  </script>
+
+</script>
 </html>

@@ -41,35 +41,47 @@ def home(request):
     numberOfTickets = ticket_data_list.count()
 
     return render(request, 'home.html', {"staffID": user.staffID,
-                                                         "username": user.username,
-                                                         "email": user.email,
-                                                         "company": user.company,
-                                                         "product": user.product,
-                                                         "role": user.role,
-                                                         "numberOfTickets": numberOfTickets,
-                                                         "ticket_data_list": ticket_data_list,
-                                                         })
+                                         "username": user.username,
+                                         "email": user.email,
+                                         "company": user.company,
+                                         "product": user.product,
+                                         "role": user.role,
+                                         "numberOfTickets": numberOfTickets,
+                                         "ticket_data_list": ticket_data_list,
+                                         })
+
 
 def load_handlers(request):
-    company = request.GET.get('company')
-    action = "Approved"
-    try:
-        if request.method == "GET":
-            action = Action.objects.get(id=request.GET.get('action')).name
-        if request.method == "POST":
-            action = Action.objects.get(id=request.POST.get('action')).name
-    except:
-        action = "None"
+    # if user and handler are not same, then load the current handler
     username = str(request.COOKIES.get('username'))
+    try:
+        ticketNumber = request.GET.get('ticketNumber')
+        ticket = Ticket.objects.get(ticketNumber=ticketNumber)
+        if username != ticket.handler.username:
+            authorizedHandlers = TicketingApp.models.User.objects.filter(username=ticket.handler.username)
+            return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
+    except:
+        pass
+
+    try:
+        action = Action.objects.get(id=request.GET.get('action')).name
+    except:
+        action = "Approved"
+
+    company = request.GET.get('company')
+    colleagues = TicketingApp.models.User.objects.filter(company=company)
+
+    if "createTicket" in request.META['HTTP_REFERER']:
+        authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Dispatcher"))
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
+
     role_name = TicketingApp.models.User.objects.get(username=username).role.name
 
-    ticketNumber = request.GET.get('ticketNumber')
-    ticket = Ticket.objects.get(ticketNumber=ticketNumber)
-
-    if role_name == "Customer" and ticket.state.name != "Close":
-        colleagues = TicketingApp.models.User.objects.filter(company=company)
-        authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Dispatcher"))
-        if ticket.state.name == "Customer Review":
+    # if the role is Customer
+    if role_name == "Customer":
+        if ticket.state.name == "Open":
+            authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Dispatcher"))
+        elif ticket.state.name == "Customer Review":
             if action == "Approved":
                 authorizedHandlers = TicketingApp.models.User.objects.filter(username=ticket.handler.username)
             elif action == "Reject":
@@ -77,21 +89,27 @@ def load_handlers(request):
                     authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Technical Director"))
                 elif ticket.severity.name == "Major":
                     authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Manager"))
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
 
+    # if the role is Dispatcher
     elif role_name == "Dispatcher":
         if action == "Approved":
             colleagues = TicketingApp.models.User.objects.filter(company=company)
             authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Engineer"))
         elif action == "Reject":
             authorizedHandlers = TicketingApp.models.User.objects.filter(role=Role.objects.get(name="Customer"))
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
 
+    # if the role is Engineer
     elif role_name == "Engineer":
         colleagues = TicketingApp.models.User.objects.filter(company=company)
         if action == "Approved":
             authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Technical Director"))
         elif action == "Reject":
             authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Dispatcher"))
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
 
+    # if the role is Technical Director
     elif role_name == "Technical Director":
         colleagues = TicketingApp.models.User.objects.filter(company=company)
         if action == "Approved":
@@ -101,15 +119,16 @@ def load_handlers(request):
                 authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Manager"))
         elif action == "Reject":
             authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Engineer"))
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
 
+    # if the role is Manager
     elif role_name == "Manager":
         if action == "Approved":
             authorizedHandlers = TicketingApp.models.User.objects.filter(role=Role.objects.get(name="Customer"))
         elif action == "Reject":
             colleagues = TicketingApp.models.User.objects.filter(company=company)
             authorizedHandlers = colleagues.filter(role=Role.objects.get(name="Technical Director"))
-
-    return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
+        return render(request, 'handler_dropdown_list_options.html', {'handlers': authorizedHandlers})
 
 
 @csrf_exempt
@@ -154,16 +173,44 @@ def queryTicket(request):
             state = form.cleaned_data["state"]
             description = form.cleaned_data["description"]
             # We check if the data is correct
-            ticket_list = Ticket.objects.filter(company=company)
-            if ticket_list:  # If there is a returned object
-                response = render(request, 'listTicket.html', {'ticket_data_list': ticket_list})
-                return HttpResponse(response)
-            else:  # otherwise, an error will be displayed
-                messages.error(request, 'No Ticket Found')
+
+            queryString = ""
+            if ticketNumber is not None:
+                queryString += "ticketNumber=" + ticketNumber + "&"
+            if company is not None:
+                queryString += "companyId=" + str(company.id) + "&"
+            if product is not None:
+                queryString += "productId=" + str(product.id) + "&"
+            return redirect("/TicketingApp/listTicket?" + queryString)
+
     else:
         form = TicketForm()
 
     return render(request, 'queryTicket.html', {'form': form})
+
+
+def listTicket(request):
+    ticketNumber = request.GET.get("ticketNumber")
+    companyId = request.GET.get("companyId")
+    productId = request.GET.get("productId")
+
+    query = 'select * from public."TicketingApp_ticket" where '
+    if ticketNumber is not None and ticketNumber is not "":
+        query += ' "ticketNumber" = ' + ticketNumber + " and "
+    if companyId is not None and companyId is not "":
+        query += ' company_id = ' + companyId + " and "
+    if productId is not None and productId is not "":
+        query += ' product_id = ' + productId + " and "
+
+    query = query[:-4]
+
+    ticket_list = Ticket.objects.raw(query)
+
+    if ticket_list:  # If there is a returned object
+        response = render(request, 'listTicket.html', {'ticket_data_list': ticket_list})
+        return HttpResponse(response)
+    else:  # otherwise, an error will be displayed
+        return render(request, 'listTicket.html', {'ticket_data_list': []})
 
 
 @csrf_exempt

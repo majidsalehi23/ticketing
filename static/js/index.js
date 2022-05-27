@@ -46,6 +46,7 @@ function createTicket() {
                 state.val(''),
                 description.val('')
             alert("ticket created");
+            window.location.href = "/TicketingApp/home";
         }
     });
 }
@@ -87,6 +88,7 @@ function updateTicket() {
                 description.val(''),
                 action.val('')
             alert("ticket updated");
+            window.location.href = "/TicketingApp/home";
         }
     });
 }

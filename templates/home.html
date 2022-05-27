@@ -57,7 +57,7 @@
                     <td>{{ ticket.state }}</td>
                     <td>{{ ticket.description }}</td>
                     <td>
-                      <input type="button" onClick="showTicket('{{ ticket.ticketNumber }}')" />
+                      <input type="button" class="btn btn-primary" value="Show" onClick="showTicket('{{ ticket.ticketNumber }}')" />
                     </td>
                   </tr> {% endfor %}
                   </tbody>

@@ -1,13 +1,15 @@
 import TicketingApp
 from TicketingApp.models import User, State
+import hashlib
 
 
 def checklogin(username, password):
-    return User.objects.get(username=username, password=password)
+    return User.objects.get(username=username, password=hashlib.md5(password.encode('utf-8')).hexdigest())
 
 
 def editAuthorization(form, user, ticketHandler):
     form.fields.get('ticketNumber').disabled = True
+    form.fields.get('state').disabled = True
     if user.staffID != ticketHandler.staffID or form.initial.get('state').name == "Close":
         for field_name in form.fields:
             form.fields[field_name].disabled = True
@@ -16,7 +18,11 @@ def editAuthorization(form, user, ticketHandler):
         form.fields.get('product').disabled = True
         form.fields.get('severity').disabled = True
         form.fields.get('company').disabled = True
-        form.fields.get('state').disabled = True
+
+    elif user.role.name == "Customer" and form.initial.get('state').name == "Customer Review":
+        form.fields.get('product').disabled = True
+        form.fields.get('severity').disabled = True
+        form.fields.get('company').disabled = True
 
     return form
 
