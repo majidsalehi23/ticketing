@@ -85,8 +85,16 @@ INSERT INTO public."TicketingApp_state"(
 INSERT INTO public."TicketingApp_state"(
 	id, name)
 	VALUES (7, 'Close');
+
+INSERT INTO public."TicketingApp_action"(
+	id, name)
+	VALUES (1, 'Approved');
 	
 
+INSERT INTO public."TicketingApp_action"(
+	id, name)
+	VALUES (2, 'Reject');
+	
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
 	VALUES (1, 'ho-00319149', 'Houman', 'admin', 'admin@admin.com', 3, 1, 1);

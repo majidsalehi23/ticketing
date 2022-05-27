@@ -2,7 +2,7 @@ import json
 import TicketingApp
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from TicketingApp.models import Ticket, Product, Severity, Company, User, State, Role, Action
@@ -20,18 +20,8 @@ def login(request):
             # We check if the data is correct
             user = checklogin(username=username, password=password)
             if user:  # If there is a returned object
-                SessionManager.createUserSession(user.username, None, None)
-                ticket_data_list = Ticket.objects.filter(handler=user)
-                numberOfTickets = ticket_data_list.count()
-                response = render(request, 'home.html', {"staffID": user.staffID,
-                                                         "username": user.username,
-                                                         "email": user.email,
-                                                         "company": user.company,
-                                                         "product": user.product,
-                                                         "role": user.role,
-                                                         "numberOfTickets": numberOfTickets,
-                                                         "ticket_data_list": ticket_data_list,
-                                                         })
+                SessionManager.createUserSession(user, user.username, None, None)
+                response = redirect('home')
                 response.set_cookie('username', username)
                 response.set_cookie('session_cookie', SessionManager.getUserCookie(username))
                 return response
@@ -42,6 +32,23 @@ def login(request):
 
     return render(request, 'login.html', {'form': form})
 
+
+def home(request):
+    username = request.COOKIES.get('username')
+    session = SessionManager.getUserSession(username)
+    user = session.user
+    ticket_data_list = Ticket.objects.filter(handler=user)
+    numberOfTickets = ticket_data_list.count()
+
+    return render(request, 'home.html', {"staffID": user.staffID,
+                                                         "username": user.username,
+                                                         "email": user.email,
+                                                         "company": user.company,
+                                                         "product": user.product,
+                                                         "role": user.role,
+                                                         "numberOfTickets": numberOfTickets,
+                                                         "ticket_data_list": ticket_data_list,
+                                                         })
 
 def load_handlers(request):
     company = request.GET.get('company')
