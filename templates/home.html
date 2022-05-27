@@ -1,0 +1,83 @@
+<!DOCTYPE html> {% load static %} <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <style>
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2
+      }
+    </style>
+  </head>
+  <body>
+    <p />
+    <div class="card">
+      <div class="container">
+        <div class="chip">
+          <img src="{% static 'img/m00319149.jpg' %}" alt="Person" width="120" height="120">
+          <p />
+        </div>
+        <p>
+          <b>Staff ID: {{staffID}}</b>
+        </p>
+        <p>Username: {{username}}</p>
+        <p>Email: {{email}}</p>
+        <p>Company: {{company}}</p>
+        <p>Product: {{product}}</p>
+        <p>Role: {{role}}</p>
+        <p>You have {{numberOfTickets}} ticket(s) on your hands</p>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr>
+            <th>Ticket Number</th>
+            <th>Vendor</th>
+            <th>Product</th>
+            <th>Severity</th>
+            <th>Current Handler</th>
+            <th>Current State</th>
+            <th>Last Comment</th>
+          </tr> {% for ticket in ticket_data_list %} <tr>
+            <td>{{ ticket.ticketNumber }}</td>
+            <td>{{ ticket.company }}</td>
+            <td>{{ ticket.product }}</td>
+            <td>{{ ticket.severity }}</td>
+            <td>{{ ticket.handler }}</td>
+            <td>{{ ticket.state }}</td>
+            <td>{{ ticket.description }}</td>
+            <td>
+              <input type="button" onClick="showTicket('{{ ticket.ticketNumber }}')" />
+            </td>
+          </tr> {% endfor %}
+        </table>
+      </div>
+      <button type="button">
+        <a href="/TicketingApp/queryTicket">Query Ticket</a>
+      </button>
+      <button type="button" class="
+            {% if role.name != 'Customer' %}
+            hidden
+            {% endif %}">
+        <a href="/TicketingApp/createTicket">Create Ticket</a>
+      </button>
+    </div>
+  </body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+</html>

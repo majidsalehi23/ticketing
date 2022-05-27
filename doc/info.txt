@@ -1,0 +1,31 @@
+postgres:
+	superuser: postgres
+	pass: admin
+	port: 5432
+
+// start using powershell:
+cd E:\app\postgres\bin\
+.\postgres.exe -D E:\app\postgres\data
+
+
+run sql:
+cd E:\app\postgres\bin\
+.\psql.exe -U postgres
+
+// create database
+CREATE DATABASE ticketing_db;
+
+// connect to db:
+\c ticketing_db;
+
+// disconnect from db:
+postgres=# \q
+
+
+// create tables:
+Run python manage.py makemigrations to create migrations for those changes
+Run python manage.py migrate to apply those changes to the database.
+
+
+select * from information_schema.tables where table_name like '%ticket%';
+select * from public."TicketingApp_user";
