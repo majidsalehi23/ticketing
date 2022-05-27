@@ -1,9 +1,10 @@
 import TicketingApp
 from TicketingApp.models import User, State
+import hashlib
 
 
 def checklogin(username, password):
-    return User.objects.get(username=username, password=password)
+    return User.objects.get(username=username, password=hashlib.md5(password.encode('utf-8')).hexdigest())
 
 
 def editAuthorization(form, user, ticketHandler):

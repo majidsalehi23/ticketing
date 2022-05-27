@@ -1,138 +1,43 @@
-<!DOCTYPE html> {% load static %} <html>
-  <head>
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-      body {
-        font-family: Arial;
-        font-size: 17px;
-        padding: 8px;
-      }
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
 
-      * {
-        box-sizing: border-box;
-      }
 
-      .row {
-        display: -ms-flexbox;
-        /* IE10 */
-        display: flex;
-        -ms-flex-wrap: wrap;
-        /* IE10 */
-        flex-wrap: wrap;
-        margin: 0 -16px;
-      }
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}"/>
 
-      .col-25 {
-        -ms-flex: 25%;
-        /* IE10 */
-        flex: 25%;
-      }
-
-      .col-50 {
-        -ms-flex: 50%;
-        /* IE10 */
-        flex: 50%;
-      }
-
-      .col-75 {
-        -ms-flex: 75%;
-        /* IE10 */
-        flex: 75%;
-      }
-
-      .col-25,
-      .col-50,
-      .col-75 {
-        padding: 0 16px;
-      }
-
-      .container {
-        background-color: #f2f2f2;
-        padding: 5px 20px 15px 20px;
-        border: 1px solid lightgrey;
-        border-radius: 3px;
-      }
-
-      input[type=text] {
-        width: 100%;
-        margin-bottom: 20px;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-      }
-
-      label {
-        margin-bottom: 10px;
-        display: block;
-      }
-
-      .icon-container {
-        margin-bottom: 20px;
-        padding: 7px 0;
-        font-size: 24px;
-      }
-
-      .btn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 12px;
-        margin: 10px 0;
-        border: none;
-        width: 100%;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 17px;
-      }
-
-      .btn:hover {
-        background-color: #45a049;
-      }
-
-      a {
-        color: #2196F3;
-      }
-
-      hr {
-        border: 1px solid lightgrey;
-      }
-
-      span.price {
-        float: right;
-        color: grey;
-      }
-
-      /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
-      @media (max-width: 800px) {
-        .row {
-          flex-direction: column-reverse;
-        }
-
-        .col-25 {
-          margin-bottom: 20px;
-        }
-      }
-    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{% static 'js/index.js' %}"></script>
-  </head>
-  <h2>Ticket Raising Form</h2>
-  <div class="row">
-    <div class="col-75">
-      <div class="container">
-        {% if submitted %}
-        Your Ticket Has Been Submitted Successfully!
-        {% else %}
-        <form method="POST" id="create-ticket-form" data-handlers-url="{% url 'load_handlers' %}">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input type="button" onclick="createTicket()" value="Create the Ticket" class="btn">
-        </form>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <script>
+    <style type="text/css">
+      body {
+        background-image: url("/static/img/background.jpg");
+        color: #EEE;
+      }
+
+    </style>
+</head>
+
+<body>
+<div class="container"> {% if submitted %} Your Ticket Has Been Submitted Successfully! {% else %}
+    <h2>Ticket Raising Form</h2>
+
+    <form method="POST" id="create-ticket-form" data-handlers-url="{% url 'load_handlers' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="button" onclick="createTicket()" value="Create the Ticket" class="btn btn-primary">
+    </form>
+    {% endif %}
+</div>
+</body>
+<script>
     let companyIdElement = $("#id_company")
     companyIdElement.change(function() {
       var url = $("#create-ticket-form").attr("data-handlers-url"); // get the url of the `load_handlers` view
@@ -147,5 +52,6 @@
         }
       });
     });
-  </script>
+
+</script>
 </html>

@@ -85,38 +85,46 @@ INSERT INTO public."TicketingApp_state"(
 INSERT INTO public."TicketingApp_state"(
 	id, name)
 	VALUES (7, 'Close');
+
+INSERT INTO public."TicketingApp_action"(
+	id, name)
+	VALUES (1, 'Approved');
 	
 
+INSERT INTO public."TicketingApp_action"(
+	id, name)
+	VALUES (2, 'Reject');
+	
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (1, 'ho-00319149', 'Houman', 'admin', 'admin@admin.com', 3, 1, 1);
+	VALUES (1, 'ho-00319149', 'Houman', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 3, 1, 1);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (2, 'fa-00319149', 'Fatemeh', 'admin', 'admin@admin.com', 1, 1, 2);
+	VALUES (2, 'fa-00319149', 'Fatemeh', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 1, 1, 2);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (3, 'mo-00319149', 'Moeen', 'admin', 'admin@admin.com', 1, 1, 3);
+	VALUES (3, 'mo-00319149', 'Moeen', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 1, 1, 3);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (4, 'ki-00319149', 'Kimia', 'admin', 'admin@admin.com', 1, 1, 3);
+	VALUES (4, 'ki-00319149', 'Kimia', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 1, 1, 3);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (5, 'el-00319149', 'Elham', 'admin', 'admin@admin.com', 1, 1, 4);
+	VALUES (5, 'el-00319149', 'Elham', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 1, 1, 4);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (6, 'ma-00319149', 'Majid', 'admin', 'admin@admin.com', 1, 1, 5);
+	VALUES (6, 'ma-00319149', 'Majid', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 1, 1, 5);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (7, 'B-fa-00319148', 'B-Fatemeh', 'admin', 'admin@admin.com', 2, 1, 2);
+	VALUES (7, 'B-fa-00319148', 'B-Fatemeh', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 2, 1, 2);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (8, 'B-ki-00319148', 'B-Kimia', 'admin', 'admin@admin.com', 2, 1, 3);
+	VALUES (8, 'B-ki-00319148', 'B-Kimia', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 2, 1, 3);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (9, 'B-el-00319148', 'B-Elham', 'admin', 'admin@admin.com', 2, 1, 4);
+	VALUES (9, 'B-el-00319148', 'B-Elham', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 2, 1, 4);
 INSERT INTO public."TicketingApp_user"(
 	id, "staffID", username, password, email, company_id, product_id, role_id)
-	VALUES (10, 'B-ma-00319148', 'B-Majid', 'admin', 'admin@admin.com', 2, 1, 5);
+	VALUES (10, 'B-ma-00319148', 'B-Majid', '21232f297a57a5a743894a0e4a801fc3', 'admin@admin.com', 2, 1, 5);
 
 
 INSERT INTO public."TicketingApp_isapproved"(

@@ -2,7 +2,7 @@ import json
 import TicketingApp
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from TicketingApp.models import Ticket, Product, Severity, Company, User, State, Role, Action
@@ -20,18 +20,8 @@ def login(request):
             # We check if the data is correct
             user = checklogin(username=username, password=password)
             if user:  # If there is a returned object
-                SessionManager.createUserSession(user.username, None, None)
-                ticket_data_list = Ticket.objects.filter(handler=user)
-                numberOfTickets = ticket_data_list.count()
-                response = render(request, 'home.html', {"staffID": user.staffID,
-                                                         "username": user.username,
-                                                         "email": user.email,
-                                                         "company": user.company,
-                                                         "product": user.product,
-                                                         "role": user.role,
-                                                         "numberOfTickets": numberOfTickets,
-                                                         "ticket_data_list": ticket_data_list,
-                                                         })
+                SessionManager.createUserSession(user, user.username, None, None)
+                response = redirect('home')
                 response.set_cookie('username', username)
                 response.set_cookie('session_cookie', SessionManager.getUserCookie(username))
                 return response
@@ -41,6 +31,24 @@ def login(request):
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+def home(request):
+    username = request.COOKIES.get('username')
+    session = SessionManager.getUserSession(username)
+    user = session.user
+    ticket_data_list = Ticket.objects.filter(handler=user)
+    numberOfTickets = ticket_data_list.count()
+
+    return render(request, 'home.html', {"staffID": user.staffID,
+                                         "username": user.username,
+                                         "email": user.email,
+                                         "company": user.company,
+                                         "product": user.product,
+                                         "role": user.role,
+                                         "numberOfTickets": numberOfTickets,
+                                         "ticket_data_list": ticket_data_list,
+                                         })
 
 
 def load_handlers(request):
@@ -165,16 +173,44 @@ def queryTicket(request):
             state = form.cleaned_data["state"]
             description = form.cleaned_data["description"]
             # We check if the data is correct
-            ticket_list = Ticket.objects.filter(company=company)
-            if ticket_list:  # If there is a returned object
-                response = render(request, 'listTicket.html', {'ticket_data_list': ticket_list})
-                return HttpResponse(response)
-            else:  # otherwise, an error will be displayed
-                messages.error(request, 'No Ticket Found')
+
+            queryString = ""
+            if ticketNumber is not None:
+                queryString += "ticketNumber=" + ticketNumber + "&"
+            if company is not None:
+                queryString += "companyId=" + str(company.id) + "&"
+            if product is not None:
+                queryString += "productId=" + str(product.id) + "&"
+            return redirect("/TicketingApp/listTicket?" + queryString)
+
     else:
         form = TicketForm()
 
     return render(request, 'queryTicket.html', {'form': form})
+
+
+def listTicket(request):
+    ticketNumber = request.GET.get("ticketNumber")
+    companyId = request.GET.get("companyId")
+    productId = request.GET.get("productId")
+
+    query = 'select * from public."TicketingApp_ticket" where '
+    if ticketNumber is not None and ticketNumber is not "":
+        query += ' "ticketNumber" = ' + ticketNumber + " and "
+    if companyId is not None and companyId is not "":
+        query += ' company_id = ' + companyId + " and "
+    if productId is not None and productId is not "":
+        query += ' product_id = ' + productId + " and "
+
+    query = query[:-4]
+
+    ticket_list = Ticket.objects.raw(query)
+
+    if ticket_list:  # If there is a returned object
+        response = render(request, 'listTicket.html', {'ticket_data_list': ticket_list})
+        return HttpResponse(response)
+    else:  # otherwise, an error will be displayed
+        return render(request, 'listTicket.html', {'ticket_data_list': []})
 
 
 @csrf_exempt
