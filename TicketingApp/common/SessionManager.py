@@ -11,6 +11,14 @@ class Session:
         self.IP = IP
         self.agent = agent
 
+    def __init__(self, user, username, sessionKey, cookie, IP, agent):
+        self.user = user
+        self.username = username
+        self.sessionKey = sessionKey
+        self.cookie = cookie
+        self.IP = IP
+        self.agent = agent    
+
     def getCookie(self):
         return self.cookie
 
@@ -40,6 +48,15 @@ class SessionManager:
         cookie = SessionManager.generateCookie()
         sessionKey = SessionManager.generateSessionKey()
         session = Session(username, sessionKey, cookie, IP, agent)
+        SessionManager.setUserSession(username, session)
+
+    @staticmethod
+    def createUserSession(user, username, IP, agent):
+        if username in SessionManager.userSessions:
+            print("Session Already Exists")
+        cookie = SessionManager.generateCookie()
+        sessionKey = SessionManager.generateSessionKey()
+        session = Session(user, username, sessionKey, cookie, IP, agent)
         SessionManager.setUserSession(username, session)
 
     @staticmethod

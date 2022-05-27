@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django_extensions',
+    'widget_tweaks',
     'TicketingApp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -81,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ticketing_db',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'root123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
