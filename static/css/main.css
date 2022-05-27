@@ -1,0 +1,210 @@
+
+.buildApp-main {
+    background: url("../bg.jpg");
+    background-size: cover;
+    background-repeat: repeat-y;
+}
+
+.buildApp-row {
+
+}
+
+.blink_me {
+    animation: blinker 2s linear infinite;
+}
+
+.success_status {
+    color: #34ce57;
+}
+
+.error_status {
+    color: red;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.buildApp-table-container {
+    overflow-y: auto;
+    min-height: 200px;
+    max-height: 500px;
+    text-align: center;
+}
+
+#status-panel {
+    border: solid #1d2f42;
+    background-color: #444444;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.buildApp-status-panel {
+    border: solid #1d2f42;
+    background-color: #444444;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.buildApp-carousel-item {
+    width: 80%;
+    margin: auto;
+}
+
+.buildApp-carousel {
+    padding: 10%;
+    background-color: #222222;
+}
+
+.buildApp-login-col {
+    float: none;
+    margin: 0 auto;
+}
+
+.buildApp-dropdown-checkbox {
+    float: right;
+    margin-top: 7px;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#overlay-content {
+    background: black;
+    color: #34ce57;
+    min-height: 500px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.buildApp-business-row {
+    padding: 10px;
+}
+
+.btn-secondary{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.bp-group-item {
+    padding: 0.2rem 0.75rem;
+}
+
+.bp-group-item {
+    padding: 0.2rem 0.75rem;
+}
+
+#buildApp-build-list-container {
+    padding: 10px;
+}
+
+.remove-bp-btn {
+    margin-left: 10px;
+    float: right;
+}
+
+.dropdown {
+    margin: 20px;
+}
+
+.dropdown-menu {
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.buildApp-top-top10 {
+    margin-top: 200px;
+}
+
+.buildApp-row {
+    padding: 10px;
+}
+
+.buildApp-spinner-loading {
+    display: none;
+    position: fixed;
+}
+
+.buildApp-alert {
+    display: none;
+}
+
+.buildApp-col {
+    margin-top: 5%;
+}
+
+.buildApp-main-action {
+    padding: 20px;
+}
+
+.buildApp-selected-server {
+    padding-left: 20px;
+}
+
+.buildApp-side-menu-header {
+    padding: 0;
+}
+
+.buildApp-side-menu-header .btn-link {
+    font-size: 14px;
+}
+
+
+#login-form {
+    display: none;
+}
+
+#buildApp-middleware-list-container {
+    display: none;
+}
+
+.buildApp-col-home-content {
+    border: solid 1px #1d2f42;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.lblDate {
+    margin-right: 10px;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    background-color: #444444;
+}
+
+.inDate {
+    margin-right: 10px;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    width: 210px;
+}
+
+.inStsSev {
+    margin-right: 10px;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    width: 170px;
+    height: 26px;
+}
+
+/*.multi_select_box {*/
+/*    width: 200px;*/
+/*    margin: 8px auto;*/
+/*}*/
+
+.multi_select_box select {
+    width: 100%;
+}
