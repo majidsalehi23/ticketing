@@ -96,3 +96,9 @@ function updateTicket() {
 function showTicket(t) {
     window.location.href = "/TicketingApp/showTicket?id=" + t;
 }
+
+
+function reportTicket(t) {
+    console.log(t)
+    window.location.href = "/TicketingApp/reportTicket?id=" + t;
+}

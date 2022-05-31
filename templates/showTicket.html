@@ -14,63 +14,43 @@
        }
      </style>
   </head>
-  <h2>Ticket Saving Form</h2>
+  <h2>Show Ticket Form</h2>
   <div class="row">
     <div class="col-75">
-      <div class="container"> {% if submitted %} Your Ticket Has Been Saved Successfully! {% else %} <form method="POST" id="save-ticket-form" data-handlers-url="{% url 'load_handlers' %}"> {% csrf_token %} {{ form.as_p }}
-          <input type="button" onClick="updateTicket()" value="Save the Ticket" class="btn btn-primary">
-        </form> {% endif %} </div>
+      <div class="container">
+        {% if submitted %}
+        Your Ticket Has Been Saved Successfully! {% else %}
+        <form method="POST" id="save-ticket-form" data-handlers-url="{% url 'load_handlers' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <a class="
+            {% if show_saveBTN == False %}
+            d-none
+            {% endif %}">
+            <input type="button" onClick="updateTicket()" value="Save the Ticket" class="btn btn-primary"></button>
+          </a>
+
+
+          <a href="/TicketingApp/home">
+              <button type="button" class="btn btn-primary">Home</button>
+          </a>
+
+          <input class="btn btn-primary" type="button"
+                 onClick="reportTicket(document.getElementById('id_ticketNumber').value);" value="History" />
+
+        </form>
+        {% endif %}
+      </div>
     </div>
   </div>
   <script>
-     let companyIdElement = $("#id_company")
-   let actionElement = $("#id_action")
-   let ticketNumberElement = $("#id_ticketNumber")
-
-   $(document).ready(function(){
-        var url = $("#save-ticket-form").attr("data-handlers-url");  // get the url of the `load_handlers` view
-        var companyId = companyIdElement.val();  // get the selected companyId from the HTML input
-        var actionId = actionElement.val();  // get the selected actionId from the HTML input
-        var ticketNumberId = ticketNumberElement.val();  // get the selected ticketNumberId from the HTML input
-
-        $.ajax({                       // initialize an AJAX request
-          url: url,                    // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
-          data: {
-            'company': companyId,       // add the companyId to the GET parameters
-            'action': actionId,       // add the actionId to the GET parameters
-            'ticketNumber': ticketNumberId       // add the actionId to the GET parameters
-          },
-          success: function (data) {   // `data` is the return of the `load_handlers` view function
-            $("#id_handler").html(data);  // replace the contents of the handler input with the data that came from the server
-          }
-        });
-  });
-
-   companyIdElement.change(function () {
-    var url = $("#save-ticket-form").attr("data-handlers-url");  // get the url of the `load_handlers` view
-    var companyId = companyIdElement.val();  // get the selected companyId from the HTML input
-    var actionId = actionElement.val();  // get the selected actionId from the HTML input
-    var ticketNumberId = ticketNumberElement.val();  // get the selected ticketNumberId from the HTML input
-
-
-    $.ajax({                       // initialize an AJAX request
-      url: url,                    // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
-      data: {
-        'company': companyId,       // add the companyId to the GET parameters
-        'action': actionId,       // add the actionId to the GET parameters
-        'ticketNumber': ticketNumberId       // add the actionId to the GET parameters
-      },
-      success: function (data) {   // `data` is the return of the `load_handlers` view function
-        $("#id_handler").html(data);  // replace the contents of the handler input with the data that came from the server
-      }
-
-
-    let companyIdElement = $("#id_company")
+    let companyElement = $("#id_company")
     let actionElement = $("#id_action")
     let ticketNumberElement = $("#id_ticketNumber")
+
     $(document).ready(function() {
       var url = $("#save-ticket-form").attr("data-handlers-url"); // get the url of the `load_handlers` view
-      var companyId = companyIdElement.val(); // get the selected companyId from the HTML input
+      var companyId = companyElement.val(); // get the selected companyId from the HTML input
       var actionId = actionElement.val(); // get the selected actionId from the HTML input
       var ticketNumberId = ticketNumberElement.val(); // get the selected ticketNumberId from the HTML input
       $.ajax({ // initialize an AJAX request
@@ -84,28 +64,42 @@
           $("#id_handler").html(data); // replace the contents of the handler input with the data that came from the server
         }
       });
-    })
-    companyIdElement.load(function() {});
-
-
-   actionElement.change(function () {
-    var url = $("#save-ticket-form").attr("data-handlers-url");  // get the url of the `load_handlers` view
-    var companyId = companyIdElement.val();  // get the selected companyId from the HTML input
-    var actionId = actionElement.val();  // get the selected actionId from the HTML input
-    var ticketNumberId = ticketNumberElement.val();  // get the selected ticketNumberId from the HTML input
-
-
-    $.ajax({                       // initialize an AJAX request
-      url: url,                    // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
-      data: {
-        'company': companyId,       // add the companyId to the GET parameters
-        'action': actionId,       // add the actionId to the GET parameters
-        'ticketNumber': ticketNumberId       // add the actionId to the GET parameters
-      },
-      success: function (data) {   // `data` is the return of the `load_handlers` view function
-        $("#id_handler").html(data);  // replace the contents of the handler input with the data that came from the server
-      }
     });
-  });
+
+    companyElement.change(function () {
+      var url = $("#save-ticket-form").attr("data-handlers-url");  // get the url of the `load_handlers` view
+      var companyId = companyElement.val();  // get the selected companyId from the HTML input
+      var actionId = actionElement.val();  // get the selected actionId from the HTML input
+      var ticketNumberId = ticketNumberElement.val();  // get the selected ticketNumberId from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
+        data: {
+          'company': companyId,       // add the companyId to the GET parameters
+          'action': actionId,       // add the actionId to the GET parameters
+          'ticketNumber': ticketNumberId       // add the actionId to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_handlers` view function
+          $("#id_handler").html(data);  // replace the contents of the handler input with the data that came from the server
+        }
+      });
+    });
+
+    actionElement.change(function () {
+      var url = $("#save-ticket-form").attr("data-handlers-url");  // get the url of the `load_handlers` view
+      var companyId = companyElement.val();  // get the selected companyId from the HTML input
+      var actionId = actionElement.val();  // get the selected actionId from the HTML input
+      var ticketNumberId = ticketNumberElement.val();  // get the selected ticketNumberId from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
+        data: {
+          'company': companyId,       // add the companyId to the GET parameters
+          'action': actionId,       // add the actionId to the GET parameters
+          'ticketNumber': ticketNumberId       // add the actionId to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_handlers` view function
+          $("#id_handler").html(data);  // replace the contents of the handler input with the data that came from the server
+        }
+      });
+    });
 </script>
 </html>

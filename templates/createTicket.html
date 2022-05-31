@@ -31,17 +31,19 @@
     <form method="POST" id="create-ticket-form" data-handlers-url="{% url 'load_handlers' %}">
         {% csrf_token %}
         {{ form.as_p }}
-
         <input type="button" onclick="createTicket()" value="Create the Ticket" class="btn btn-primary">
+        <a href="/TicketingApp/home">
+            <button type="button" class="btn btn-primary">Home</button>
+        </a>
     </form>
     {% endif %}
 </div>
 </body>
 <script>
-    let companyIdElement = $("#id_company")
-    companyIdElement.change(function() {
+    let companyElement = $("#id_company")
+    companyElement.change(function() {
       var url = $("#create-ticket-form").attr("data-handlers-url"); // get the url of the `load_handlers` view
-      var companyId = companyIdElement.val(); // get the selected company ID from the HTML input
+      var companyId = companyElement.val(); // get the selected company ID from the HTML input
       $.ajax({ // initialize an AJAX request
         url: url, // set the url of the request (= localhost:8000/TicketingApp/load-handlers/)
         data: {
@@ -52,6 +54,5 @@
         }
       });
     });
-
 </script>
 </html>

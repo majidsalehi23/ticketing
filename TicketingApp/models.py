@@ -72,17 +72,17 @@ class Ticket(models.Model):
 
 
 class TicketLog(models.Model):
-    ticketID = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    ticketNumber = models.CharField(max_length=50, unique=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    severity = models.ForeignKey(Severity, on_delete=models.CASCADE)
+    handler = models.ForeignKey(User, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    description = models.CharField(max_length=500)
     time = models.DateTimeField(default=datetime.now)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, default="")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="")
-    severity = models.ForeignKey(Severity, on_delete=models.CASCADE, default="")
-    handler = models.ForeignKey(User, on_delete=models.CASCADE, default="")
-    state = models.ForeignKey(State, on_delete=models.CASCADE, default="")
-    description = models.CharField(max_length=500, default="")
 
     def __str__(self):
-        return self.ticketID.ticketNumber
+        return self.ticketNumber
 
 
 class Action(models.Model):

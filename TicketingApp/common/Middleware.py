@@ -1,6 +1,4 @@
 import threading
-# from ..urls import publicUrls as commonPublicUrls
-# from TicketingApp.urls import publicUrls
 from TicketingApp.urls import publicUrlsString
 from TicketingApp.common.SessionManager import SessionManager
 from django.shortcuts import redirect
@@ -50,4 +48,3 @@ class GlobalRequestMiddleware(object):
             pass
 
         return response
-
