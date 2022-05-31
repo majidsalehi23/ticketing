@@ -10,7 +10,7 @@ class LoginForm(forms.Form):
 
 
 class TicketForm(forms.Form):
-    ticketNumber = forms.CharField(max_length=50, required=False, initial="user" + "-" + str(time.time())[0:10],
+    ticketNumber = forms.CharField(max_length=50, required=False, initial=str(time.time())[0:10],
                                    widget=forms.TextInput(attrs={'class': "form-control"}))
     product = forms.ModelChoiceField(queryset=Product.objects.all(), required=False,
                                      widget=forms.Select(attrs={'class': "form-select"}))
@@ -18,8 +18,8 @@ class TicketForm(forms.Form):
                                       widget=forms.Select(attrs={'class': "form-select"}))
     company = forms.ModelChoiceField(queryset=Company.objects.all(), required=False,
                                      widget=forms.Select(attrs={'class': "form-select"}))
-    handler = forms.ModelChoiceField(queryset=TicketingApp.models.User.objects.all(), required=False,
-                                     widget=forms.Select(attrs={'class': "form-select"}))
+    handler = forms.ModelChoiceField(queryset=TicketingApp.models.User.objects.all(), label='Next Handler(s)',
+                                     required=False, widget=forms.Select(attrs={'class': "form-select"}))
     state = forms.ModelChoiceField(queryset=State.objects.all(), required=False,
                                    widget=forms.Select(attrs={'class': "form-select"}))
     description = forms.CharField(max_length=500, required=False,
@@ -28,7 +28,7 @@ class TicketForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['handler'].queryset = TicketingApp.models.User.objects.none()
-        self.fields['ticketNumber'].initial = "user" + "-" + str(time.time())[0:10]
+        self.fields['ticketNumber'].initial = str(time.time())[0:10]
 
         if 'company' in self.data:
             try:

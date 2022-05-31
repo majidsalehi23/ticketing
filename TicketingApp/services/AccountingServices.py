@@ -1,5 +1,5 @@
-import TicketingApp
-from TicketingApp.models import User, State
+from TicketingApp.models import User, State, TicketLog
+from datetime import datetime
 import hashlib
 
 
@@ -29,11 +29,13 @@ def editAuthorization(form, user, ticketHandler):
 
 def saveTicket(request, ticket):
     # Ajax sends 1, the private key of "Approved", as string.
-    if request.path == "/TicketingApp/createTicket/" or request.POST.get('action') == "1":
-        if ticket.state.name == "Final Technical Review":
-            if ticket.severity.name == "Minor":
-                ticket.state = State.objects.get(id=ticket.state.id + 2)
+    if ticket.state.name == "Open":
         ticket.state = State.objects.get(id=ticket.state.id + 1)
+    elif request.POST.get('action') == "1":
+        if ticket.state.name == "Final Technical Review" and ticket.severity.name == "Minor":
+            ticket.state = State.objects.get(id=ticket.state.id + 2)
+        else:
+            ticket.state = State.objects.get(id=ticket.state.id + 1)
     # Ajax sends 2, the private key of "Reject", as string.
     elif request.POST.get('action') == "2":
         if ticket.state.name == "Customer Review":
@@ -41,3 +43,13 @@ def saveTicket(request, ticket):
                 ticket.state = State.objects.get(id=ticket.state.id - 2)
         ticket.state = State.objects.get(id=ticket.state.id - 1)
     ticket.save()
+    ticketLog = TicketLog()
+    ticketLog.ticketNumber = ticket.ticketNumber
+    ticketLog.company = ticket.company
+    ticketLog.product = ticket.product
+    ticketLog.severity = ticket.severity
+    ticketLog.handler = ticket.handler
+    ticketLog.state = ticket.state
+    ticketLog.description = ticket.description
+    ticketLog.time = datetime.now()
+    ticketLog.save()

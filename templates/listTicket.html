@@ -20,6 +20,7 @@
         <div>
           <table class="table" style="color: #EEE;">
             <thead class="thead-dark">
+              {% include 'messages.html' %}
               <tr>
               <th>Ticket Number</th>
               <th>Vendor</th>
@@ -45,6 +46,9 @@
             </tr> {% endfor %}
             </tbody>
           </table>
+          <a href="/TicketingApp/home">
+              <button type="button" class="btn btn-primary">Home</button>
+          </a>
         </div>
       </div>
       

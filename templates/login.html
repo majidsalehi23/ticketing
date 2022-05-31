@@ -13,7 +13,8 @@
   <div class="row">
     <div class="col-12">
       <h2 class=" my-5" style="padding: 10px">Please Enter your Credentials:</h2>
-      <form method="post"> {% csrf_token %} 
+      {% include 'messages.html' %}
+      <form method="post"> {% csrf_token %}
         <div class="form-group" style="padding: 10px">
           <input type="text" placeholder="Username" class="form-control {% if form.username.errors  %}is-invalid{% endif %}" id="id_username" name="username" value='{{ form.username.value|default:"" }}'> {% if form.username.errors %} <div class="invalid-feedback">{{ form.username.errors }}</div> {% endif %}
         </div>
