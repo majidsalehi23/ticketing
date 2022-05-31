@@ -1,0 +1,58 @@
+<!DOCTYPE html> {% load static %} <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+    <style type="text/css">
+      body {
+           background-image: url("/static/img/background.jpg");
+           color: #EEE;
+         }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h2>Result Table</h2>
+        <div>
+          <table class="table" style="color: #EEE;">
+            <thead class="thead-dark">
+              {% include 'messages.html' %}
+              <tr>
+              <th>Ticket Number</th>
+              <th>Vendor</th>
+              <th>Product</th>
+              <th>Severity</th>
+              <th>Current Handler</th>
+              <th>Current State</th>
+              <th>Last Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+             {% for ticket in ticket_data_list %} <tr>
+              <td>{{ ticket.ticketNumber }}</td>
+              <td>{{ ticket.company }}</td>
+              <td>{{ ticket.product }}</td>
+              <td>{{ ticket.severity }}</td>
+              <td>{{ ticket.handler }}</td>
+              <td>{{ ticket.state }}</td>
+              <td>{{ ticket.description }}</td>
+              <td>
+                <input class="btn btn-primary" type="button" onClick="showTicket('{{ ticket.ticketNumber }}')" value="SHOW" />
+              </td>
+            </tr> {% endfor %}
+            </tbody>
+          </table>
+          <a href="/TicketingApp/home">
+              <button type="button" class="btn btn-primary">Home</button>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+
+  </body>
+</html>
